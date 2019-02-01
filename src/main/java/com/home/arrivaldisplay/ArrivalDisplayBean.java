@@ -69,16 +69,19 @@ public class ArrivalDisplayBean implements java.io.Serializable {
         createArrivalsModel();
     }
 
+    /**
+     * JAX-RS client to poll the data
+     */
     public void pollData() {
         LOG.debug("Polling data...");
         loadData();
     }
 
     /**
-     * JAX-RS client to poll the data
+     * JAX-RS client to load the data
      */
     private void loadData() {
-        LOG.debug("RESTful call to [" + callUri + ']');
+        LOG.debug("RESTful call to [" + callUri + "]...");
         arrivals = jaxRsClient.target(callUri)
                 .request("application/xml").get(new GenericType<List<ArrivalVO>>() {
         });
