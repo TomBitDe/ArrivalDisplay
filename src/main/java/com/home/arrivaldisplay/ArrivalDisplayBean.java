@@ -1,10 +1,11 @@
 package com.home.arrivaldisplay;
 
+import com.home.flightservice.boundary.ArrivalVO;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.GenericType;
@@ -23,11 +24,10 @@ public class ArrivalDisplayBean implements java.io.Serializable {
     private String arpo = "DXB";
     private String startDate = "2011-10-02";
     private String startTime = "18:48:00";
-    private String endDateTime = "2011-10-02 19:48:00";
-    private String maxEntries = "80";
+    private final String maxEntries = "80";
 
-    private String baseUri = "http://localhost:8080/FlightService-war/rest/FlightService/arrivals";
-    private String callUri = baseUri + '/' + arpo + '/' + startDate + ' ' + startTime + '/' + maxEntries;
+    private final String baseUri = "http://localhost:8080/FlightService-war/rest/FlightService/arrivals";
+    private final String callUri = baseUri + '/' + arpo + '/' + startDate + ' ' + startTime + '/' + maxEntries;
 
     private String columnName;
     private List<ColumnModel> columns;
@@ -70,7 +70,7 @@ public class ArrivalDisplayBean implements java.io.Serializable {
     }
 
     /**
-     * JAX-RS client to poll the data
+     * Do poll the data
      */
     public void pollData() {
         LOG.debug("Polling data...");
@@ -95,6 +95,10 @@ public class ArrivalDisplayBean implements java.io.Serializable {
         return this.arrivals;
     }
 
+    /**
+     * Create the datatable columns. Dynamic means the columns are NOT defined in the JSF page. It is done here by
+     * program.
+     */
     private void createDynamicColumns() {
         columns = new ArrayList<>();
 
@@ -117,10 +121,20 @@ public class ArrivalDisplayBean implements java.io.Serializable {
         this.columnName = columnName;
     }
 
+    /**
+     * The datatable column definition. The column header text and the needed column property to show the column values
+     * is defined here.
+     */
     static public class ColumnModel implements Serializable {
         private final String header;
         private final String property;
 
+        /**
+         * Construct a new ColumnModel
+         *
+         * @param header   the column header text to display at the top of the column
+         * @param property the property that shows the content of the column
+         */
         public ColumnModel(String header, String property) {
             this.header = header;
             this.property = property;

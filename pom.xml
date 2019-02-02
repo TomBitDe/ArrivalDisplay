@@ -16,6 +16,13 @@
     
     <dependencies>
         <dependency>
+            <groupId>com.home</groupId>
+            <artifactId>FlightService-api</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/FlightService-api.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
             <version>2.11.1</version>
@@ -97,6 +104,12 @@
                 <version>2.3</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>
+          <webResources> 
+            <resource> 
+              <directory>${project.basedir}/src/main/resources/lib/</directory> 
+              <targetPath>WEB-INF/lib</targetPath> 
+            </resource> 
+          </webResources> 
                 </configuration>
             </plugin>
             <plugin>
