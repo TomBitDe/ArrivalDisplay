@@ -8,24 +8,25 @@
       xmlns:p="http://primefaces.org/ui">
 
     <h:head>
+        <h:outputStylesheet name="style.css" library="css" />
     </h:head>
     <h:body>
         <h:form id="form" prependId="false">
-            <p:dataTable var="data" value="#{arrivalDisplay.arrivals}">
-                <f:facet name="header">
-                    <p:outputLabel value="#{arrivalDisplay.arpo} Arrivals starting from #{arrivalDisplay.startTime}">
-                    </p:outputLabel>
-                </f:facet>
-                <p:columns value="#{arrivalDisplay.columns}" var="column"
-                           columnIndexVar="colIndex">
-                    <f:facet name="header">
-                        #{column.header}
-                    </f:facet>
+            <p:panel id="basic" header="#{arrivalDisplay.arpo} &#160;&#160;&#160;&#160;&#160;arrivals starting from &#160;&#160;&#160;#{arrivalDisplay.startTime}"
+                     styleClass="redColoredPanel">
+                <p:dataTable var="data" value="#{arrivalDisplay.arrivals}">
+                    <p:columns style="text-align: left;"
+                               value="#{arrivalDisplay.columns}" var="column"
+                               width="#{column.width}" 
+                               columnIndexVar="colIndex">
+                        <f:facet name="header">
+                            #{column.header}
+                        </f:facet>
 
-                    #{data[column.property]}
-                </p:columns>
-            </p:dataTable>
-
+                        #{data[column.property]}
+                    </p:columns>
+                </p:dataTable>
+            </p:panel>
         </h:form>
     </h:body>
 </html>

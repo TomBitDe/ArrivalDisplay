@@ -1,0 +1,7 @@
+.leftAlign {
+      float: left;
+}
+
+.redColoredPanel .ui-panel-titlebar {
+   color: blue;
+}

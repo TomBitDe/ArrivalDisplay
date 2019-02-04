@@ -102,11 +102,11 @@ public class ArrivalDisplayBean implements java.io.Serializable {
     private void createDynamicColumns() {
         columns = new ArrayList<>();
 
-        columns.add(new ColumnModel("Flight", "flgtNo"));
-        columns.add(new ColumnModel("Scheduled", "schedFlgtDt"));
-        columns.add(new ColumnModel("Expected", "expected"));
-        columns.add(new ColumnModel("Comments", "comments"));
-        columns.add(new ColumnModel("Exit", "paxExit"));
+        columns.add(new ColumnModel("Flight", "flgtNo", "80"));
+        columns.add(new ColumnModel("Scheduled", "schedFlgtDt", "100"));
+        columns.add(new ColumnModel("Expected", "expected", "100"));
+        columns.add(new ColumnModel("Comments", "comments", ""));
+        columns.add(new ColumnModel("Exit", "paxExit", "50"));
     }
 
     public List<ColumnModel> getColumns() {
@@ -128,16 +128,19 @@ public class ArrivalDisplayBean implements java.io.Serializable {
     static public class ColumnModel implements Serializable {
         private final String header;
         private final String property;
+        private final String width;
 
         /**
          * Construct a new ColumnModel
          *
          * @param header   the column header text to display at the top of the column
          * @param property the property that shows the content of the column
+         * @param width    the column width
          */
-        public ColumnModel(String header, String property) {
+        public ColumnModel(String header, String property, String width) {
             this.header = header;
             this.property = property;
+            this.width = width;
         }
 
         public String getHeader() {
@@ -146,6 +149,10 @@ public class ArrivalDisplayBean implements java.io.Serializable {
 
         public String getProperty() {
             return property;
+        }
+
+        public String getWidth() {
+            return width;
         }
     }
 }
