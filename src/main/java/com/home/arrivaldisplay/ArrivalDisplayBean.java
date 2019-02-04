@@ -18,6 +18,13 @@ import org.apache.logging.log4j.Logger;
 @ManagedBean(name = "arrivalDisplay")
 @RequestScoped
 public class ArrivalDisplayBean implements java.io.Serializable {
+    /**
+     * Needed for proper serializable implementation.
+     */
+    private static final long serialVersionUID = 1L;
+    /**
+     * A logger.
+     */
     private static final Logger LOG = LogManager.getLogger(ArrivalDisplayBean.class.getName());
     private final Client jaxRsClient;
 
@@ -25,8 +32,8 @@ public class ArrivalDisplayBean implements java.io.Serializable {
     private String startDate = "2011-10-02";
     private String startTime = "18:48:00";
     private final String maxEntries = "80";
-
     private final String baseUri = "http://localhost:8080/FlightService-war/rest/FlightService/arrivals";
+
     private final String callUri = baseUri + '/' + arpo + '/' + startDate + ' ' + startTime + '/' + maxEntries;
 
     private String columnName;

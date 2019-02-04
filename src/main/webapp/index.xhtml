@@ -12,6 +12,8 @@
     </h:head>
     <h:body>
         <h:form id="form" prependId="false">
+            <p:growl id="growl" showDetail="true" sticky="false" life="2500"/>
+
             <p:panel id="basic" header="#{arrivalDisplay.arpo} &#160;&#160;&#160;&#160;&#160;arrivals starting from &#160;&#160;&#160;#{arrivalDisplay.startTime}"
                      styleClass="redColoredPanel">
                 <p:dataTable var="data" value="#{arrivalDisplay.arrivals}">
@@ -27,6 +29,8 @@
                     </p:columns>
                 </p:dataTable>
             </p:panel>
+            
+            <p:poll interval="10" update="form" listener="#{arrivalDisplay.pollData}" />
         </h:form>
     </h:body>
 </html>
