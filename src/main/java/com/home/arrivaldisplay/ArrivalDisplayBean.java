@@ -44,6 +44,15 @@ public class ArrivalDisplayBean implements java.io.Serializable {
         config = new ArrivalDisplayConfigurationBean();
     }
 
+    /**
+     * Get the arrivals to display.
+     *
+     * @return the arrivals as a List
+     */
+    public List<ArrivalVO> getArrivals() {
+        return this.arrivals;
+    }
+
     public String getArpo() {
         return config.getArpo();
     }
@@ -92,6 +101,9 @@ public class ArrivalDisplayBean implements java.io.Serializable {
         config.setPollInterval(pollInterval);
     }
 
+    /**
+     * Initialize with data and create the datatable column model after bean construction.
+     */
     @PostConstruct
     public void init() {
         LOG.debug("Load configuration...");
@@ -104,7 +116,7 @@ public class ArrivalDisplayBean implements java.io.Serializable {
     }
 
     /**
-     * Do poll the data
+     * Do poll the data.
      */
     public void pollData() {
         LOG.debug("Polling data...");
@@ -122,12 +134,8 @@ public class ArrivalDisplayBean implements java.io.Serializable {
         });
     }
 
-    public void createArrivalsModel() {
+    private void createArrivalsModel() {
         createDynamicColumns();
-    }
-
-    public List<ArrivalVO> getArrivals() {
-        return this.arrivals;
     }
 
     /**

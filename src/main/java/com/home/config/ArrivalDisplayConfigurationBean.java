@@ -12,7 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Handle the monitoring configuration view.
+ * Handle the arrival display configuration.
  */
 @ManagedBean(name = "ArrivalDisplayConfigurationBean")
 @ApplicationScoped
@@ -150,80 +150,90 @@ public class ArrivalDisplayConfigurationBean implements Serializable {
     }
 
     /**
+     * Get the display start date.
      *
-     * @return
+     * @return the starting date
      */
     public String getStartDate() {
         return startDate;
     }
 
     /**
+     * Set the display start date.
      *
-     * @param startDate
+     * @param startDate the starting date
      */
     public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
     /**
+     * Get the display start time.
      *
-     * @return
+     * @return the starting time
      */
     public String getStartTime() {
         return startTime;
     }
 
     /**
+     * Set the display start time.
      *
-     * @param startTime
+     * @param startTime the starting time
      */
     public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
     /**
+     * Get the maximum number of arrivals to display.
      *
-     * @return
+     * @return the maximum number of arrivals to show
      */
     public String getMaxEntries() {
         return maxEntries;
     }
 
     /**
+     * Set the maximum number of arrivals to display.
      *
-     * @param maxEntries
+     * @param maxEntries the maximum number of arrivals
      */
     public void setMaxEntries(String maxEntries) {
         this.maxEntries = maxEntries;
     }
 
     /**
+     * Get the base URI for the RESTful service call.
      *
-     * @return
+     * @return the URI
      */
     public String getBaseUri() {
         return baseUri;
     }
 
     /**
+     * Set the base URI for the RESTful service call.
      *
-     * @param baseUri
+     * @param baseUri the URI
      */
     public void setBaseUri(String baseUri) {
         this.baseUri = baseUri;
     }
 
     /**
+     * Get the display refresh interval.
      *
-     * @return
+     * @return the inverval in seconds
      */
     public String getPollInterval() {
         return pollInterval;
     }
 
     /**
+     * Set the display refresh interval.
      *
-     * @param pollInterval
+     * @param pollInterval the interval in seconds
      */
     public void setPollInterval(String pollInterval) {
         this.pollInterval = pollInterval;
