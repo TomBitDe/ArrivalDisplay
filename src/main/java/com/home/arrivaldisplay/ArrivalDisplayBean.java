@@ -57,48 +57,24 @@ public class ArrivalDisplayBean implements java.io.Serializable {
         return config.getArpo();
     }
 
-    public void setArpo(String arpo) {
-        config.setArpo(arpo);
-    }
-
     public String getStartDate() {
         return config.getStartDate();
-    }
-
-    public void setStartDate(String startDate) {
-        config.setStartDate(startDate);
     }
 
     public String getStartTime() {
         return config.getStartTime();
     }
 
-    public void setStartTime(String startTime) {
-        config.setStartTime(startTime);
-    }
-
     public String getMaxEntries() {
         return config.getMaxEntries();
-    }
-
-    public void setMaxEntries(String maxEntries) {
-        config.setMaxEntries(maxEntries);
     }
 
     public String getBaseUri() {
         return config.getBaseUri();
     }
 
-    public void setBaseUri(String baseUri) {
-        config.setBaseUri(baseUri);
-    }
-
     public String getPollInterval() {
         return config.getPollInterval();
-    }
-
-    public void setPollInterval(String pollInterval) {
-        config.setPollInterval(pollInterval);
     }
 
     /**
@@ -124,7 +100,7 @@ public class ArrivalDisplayBean implements java.io.Serializable {
     }
 
     /**
-     * JAX-RS client to load the data
+     * JAX-RS client to load the data.
      */
     private void loadData() {
         String callUri = getBaseUri() + '/' + getArpo() + '/' + getStartDate() + ' ' + getStartTime() + '/' + getMaxEntries();
@@ -174,7 +150,7 @@ public class ArrivalDisplayBean implements java.io.Serializable {
         private final String width;
 
         /**
-         * Construct a new ColumnModel
+         * Construct a new ColumnModel.
          *
          * @param header   the column header text to display at the top of the column
          * @param property the property that shows the content of the column
