@@ -1,9 +1,11 @@
 package com.home.arrivaldisplay;
 
+import com.home.config.ArrivalDisplayConfigurationBean;
 import com.home.flightservice.boundary.ArrivalVO;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
 import javax.ws.rs.client.Client;
@@ -26,15 +28,12 @@ public class ArrivalDisplayBean implements java.io.Serializable {
      * A logger.
      */
     private static final Logger LOG = LogManager.getLogger(ArrivalDisplayBean.class.getName());
+    /**
+     * A JaxRs client.
+     */
     private final Client jaxRsClient;
 
-    private String arpo = "DXB";
-    private String startDate = "2011-10-02";
-    private String startTime = "18:48:00";
-    private final String maxEntries = "80";
-    private final String baseUri = "http://localhost:8080/FlightService-war/rest/FlightService/arrivals";
-
-    private final String callUri = baseUri + '/' + arpo + '/' + startDate + ' ' + startTime + '/' + maxEntries;
+    private final ArrivalDisplayConfigurationBean config;
 
     private String columnName;
     private List<ColumnModel> columns;
@@ -42,37 +41,65 @@ public class ArrivalDisplayBean implements java.io.Serializable {
 
     public ArrivalDisplayBean() {
         jaxRsClient = ClientBuilder.newClient();
-        init();
+        config = new ArrivalDisplayConfigurationBean();
     }
 
     public String getArpo() {
-        return arpo;
+        return config.getArpo();
     }
 
     public void setArpo(String arpo) {
-        this.arpo = arpo;
+        config.setArpo(arpo);
     }
 
     public String getStartDate() {
-        return startDate;
+        return config.getStartDate();
     }
 
     public void setStartDate(String startDate) {
-        this.startDate = startDate;
+        config.setStartDate(startDate);
     }
 
     public String getStartTime() {
-        return startTime;
+        return config.getStartTime();
     }
 
     public void setStartTime(String startTime) {
-        this.startTime = startTime;
+        config.setStartTime(startTime);
     }
 
+    public String getMaxEntries() {
+        return config.getMaxEntries();
+    }
+
+    public void setMaxEntries(String maxEntries) {
+        config.setMaxEntries(maxEntries);
+    }
+
+    public String getBaseUri() {
+        return config.getBaseUri();
+    }
+
+    public void setBaseUri(String baseUri) {
+        config.setBaseUri(baseUri);
+    }
+
+    public String getPollInterval() {
+        return config.getPollInterval();
+    }
+
+    public void setPollInterval(String pollInterval) {
+        config.setPollInterval(pollInterval);
+    }
+
+    @PostConstruct
     public void init() {
+        LOG.debug("Load configuration...");
+        config.loadConfiguration();
         LOG.debug("Load data...");
         loadData();
 
+        LOG.debug("Create arrivals model...");
         createArrivalsModel();
     }
 
@@ -88,6 +115,7 @@ public class ArrivalDisplayBean implements java.io.Serializable {
      * JAX-RS client to load the data
      */
     private void loadData() {
+        String callUri = getBaseUri() + '/' + getArpo() + '/' + getStartDate() + ' ' + getStartTime() + '/' + getMaxEntries();
         LOG.debug("RESTful call to [" + callUri + "]...");
         arrivals = jaxRsClient.target(callUri)
                 .request("application/xml").get(new GenericType<List<ArrivalVO>>() {

@@ -30,7 +30,7 @@
                 </p:dataTable>
             </p:panel>
             
-            <p:poll interval="10" update="form" listener="#{arrivalDisplay.pollData}" />
+            <p:poll interval="#{arrivalDisplay.pollInterval}" update="basic" listener="#{arrivalDisplay.pollData}" />
         </h:form>
     </h:body>
 </html>
