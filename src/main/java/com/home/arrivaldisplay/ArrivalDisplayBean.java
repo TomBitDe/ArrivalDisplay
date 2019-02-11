@@ -6,8 +6,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.GenericType;
@@ -18,7 +18,7 @@ import org.apache.logging.log4j.Logger;
  * Arrival data provider.
  */
 @ManagedBean(name = "arrivalDisplay")
-@RequestScoped
+@SessionScoped
 public class ArrivalDisplayBean implements java.io.Serializable {
     /**
      * Needed for proper serializable implementation.
