@@ -124,6 +124,7 @@ public class ArrivalDisplayBean implements java.io.Serializable {
         columns.add(new ColumnModel("Flight", "flgtNo", "80"));
         columns.add(new ColumnModel("Scheduled", "schedFlgtDt", "100"));
         columns.add(new ColumnModel("Expected", "expected", "100"));
+        columns.add(new ColumnModel("From", "originArpo", "200"));
         columns.add(new ColumnModel("Comments", "comments", ""));
         columns.add(new ColumnModel("Exit", "paxExit", "50"));
     }
