@@ -108,7 +108,7 @@ public class ArrivalDisplayBean implements java.io.Serializable {
     }
 
     /**
-     * Do poll the data.
+     * Do poll the arrivals data.
      */
     public void pollData() {
         LOG.debug("Polling data...");
@@ -133,6 +133,7 @@ public class ArrivalDisplayBean implements java.io.Serializable {
         String flgtUri = getBaseUri() + '/' + getArpo() + '/' + getStartDate()
                 + ' ' + getStartTime() + '/' + getMaxEntries();
         try {
+            // Try to load the arrivals first
             LOG.debug("RESTful call to [" + flgtUri + "]...");
             arrivals = jaxRsClient.target(flgtUri)
                     .request("application/xml").get(new GenericType<List<ArrivalVO>>() {
@@ -142,6 +143,7 @@ public class ArrivalDisplayBean implements java.io.Serializable {
             AirportVO airportVO;
 
             try {
+                // Try to load the full airport name for each origin airport code and append
                 for (ArrivalVO arrival : arrivals) {
                     arpoUri = getArpoUri() + '/' + "id" + '/' + arrival.getOriginArpo();
                     airportVO = jaxRsClient.target(arpoUri)
@@ -161,6 +163,7 @@ public class ArrivalDisplayBean implements java.io.Serializable {
         }
         catch (Exception ex) {
             LOG.error(flgtUri + " : " + ex.getMessage());
+            // Clear the arrivals list in case loading failed
             arrivals.clear();
         }
     }
