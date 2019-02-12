@@ -23,6 +23,13 @@
             <systemPath>${project.basedir}/src/main/resources/lib/FlightService-api.jar</systemPath>
         </dependency>
         <dependency>
+            <groupId>com.home</groupId>
+            <artifactId>AirportService-api</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/AirportService-api.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-api</artifactId>
             <version>2.11.1</version>

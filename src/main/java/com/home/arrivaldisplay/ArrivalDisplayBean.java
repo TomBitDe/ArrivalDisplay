@@ -1,5 +1,6 @@
 package com.home.arrivaldisplay;
 
+import airportservice.facade.AirportVO;
 import com.home.config.ArrivalDisplayConfigurationBean;
 import com.home.flightservice.boundary.ArrivalVO;
 import java.io.Serializable;
@@ -38,10 +39,12 @@ public class ArrivalDisplayBean implements java.io.Serializable {
     private String columnName;
     private List<ColumnModel> columns;
     private List<ArrivalVO> arrivals;
+    private List<AirportVO> airports;
 
     public ArrivalDisplayBean() {
         jaxRsClient = ClientBuilder.newClient();
         config = new ArrivalDisplayConfigurationBean();
+        arrivals = new ArrayList<>();
     }
 
     /**
@@ -51,6 +54,15 @@ public class ArrivalDisplayBean implements java.io.Serializable {
      */
     public List<ArrivalVO> getArrivals() {
         return this.arrivals;
+    }
+
+    /**
+     * Get the airports for conversion.
+     *
+     * @return the airports as a List
+     */
+    public List<AirportVO> getAirports() {
+        return this.airports;
     }
 
     public String getArpo() {
@@ -77,6 +89,10 @@ public class ArrivalDisplayBean implements java.io.Serializable {
         return config.getPollInterval();
     }
 
+    public String getArpoUri() {
+        return config.getArpoUri();
+    }
+
     /**
      * Initialize with data and create the datatable column model after bean construction.
      */
@@ -85,7 +101,7 @@ public class ArrivalDisplayBean implements java.io.Serializable {
         LOG.debug("Load configuration...");
         config.loadConfiguration();
         LOG.debug("Load data...");
-        loadData();
+        loadArrivals();
 
         LOG.debug("Create arrivals model...");
         createArrivalsModel();
@@ -96,18 +112,57 @@ public class ArrivalDisplayBean implements java.io.Serializable {
      */
     public void pollData() {
         LOG.debug("Polling data...");
-        loadData();
+        loadArrivals();
     }
 
     /**
-     * JAX-RS client to load the data.
+     * JAX-RS client to load the airports.
      */
-    private void loadData() {
-        String callUri = getBaseUri() + '/' + getArpo() + '/' + getStartDate() + ' ' + getStartTime() + '/' + getMaxEntries();
-        LOG.debug("RESTful call to [" + callUri + "]...");
-        arrivals = jaxRsClient.target(callUri)
-                .request("application/xml").get(new GenericType<List<ArrivalVO>>() {
+    private void loadAirports() {
+        String arpoUri = getArpoUri() + "/airports" + '/' + "0" + '/' + "1000";
+        LOG.debug("RESTful call to [" + arpoUri + "]...");
+        airports = jaxRsClient.target(arpoUri)
+                .request("application/xml").get(new GenericType<List<AirportVO>>() {
         });
+    }
+
+    /**
+     * JAX-RS client to load the arrivals data.
+     */
+    private void loadArrivals() {
+        String flgtUri = getBaseUri() + '/' + getArpo() + '/' + getStartDate()
+                + ' ' + getStartTime() + '/' + getMaxEntries();
+        try {
+            LOG.debug("RESTful call to [" + flgtUri + "]...");
+            arrivals = jaxRsClient.target(flgtUri)
+                    .request("application/xml").get(new GenericType<List<ArrivalVO>>() {
+            });
+
+            String arpoUri = "";
+            AirportVO airportVO;
+
+            try {
+                for (ArrivalVO arrival : arrivals) {
+                    arpoUri = getArpoUri() + '/' + "id" + '/' + arrival.getOriginArpo();
+                    airportVO = jaxRsClient.target(arpoUri)
+                            .request("application/xml").get(new GenericType<AirportVO>() {
+                    });
+
+                    if (airportVO != null && airportVO.getDescr() != null
+                            && airportVO.getDescr().lastIndexOf(',') != -1) {
+                        arrival.setOriginArpo(arrival.getOriginArpo() + " - "
+                                + airportVO.getDescr().substring(airportVO.getDescr().lastIndexOf(',') + 1));
+                    }
+                }
+            }
+            catch (Exception ex) {
+                LOG.error(arpoUri + " : " + ex.getMessage());
+            }
+        }
+        catch (Exception ex) {
+            LOG.error(flgtUri + " : " + ex.getMessage());
+            arrivals.clear();
+        }
     }
 
     private void createArrivalsModel() {
@@ -121,12 +176,12 @@ public class ArrivalDisplayBean implements java.io.Serializable {
     private void createDynamicColumns() {
         columns = new ArrayList<>();
 
-        columns.add(new ColumnModel("Flight", "flgtNo", "80"));
-        columns.add(new ColumnModel("Scheduled", "schedFlgtDt", "100"));
-        columns.add(new ColumnModel("Expected", "expected", "100"));
-        columns.add(new ColumnModel("From", "originArpo", "200"));
-        columns.add(new ColumnModel("Comments", "comments", ""));
-        columns.add(new ColumnModel("Exit", "paxExit", "50"));
+        columns.add(new ColumnModel("Flight", "flgtNo", "9%"));
+        columns.add(new ColumnModel("Scheduled", "schedFlgtDt", "15%"));
+        columns.add(new ColumnModel("Expected", "expected", "15%"));
+        columns.add(new ColumnModel("From", "originArpo", "32%"));
+        columns.add(new ColumnModel("Comments", "comments", "21%"));
+        columns.add(new ColumnModel("Exit", "paxExit", "8%"));
     }
 
     public List<ColumnModel> getColumns() {

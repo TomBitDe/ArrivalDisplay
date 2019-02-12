@@ -58,6 +58,10 @@ public class ArrivalDisplayConfigurationBean implements Serializable {
      */
     private static final String DEFAULT_POLL_INTERVAL = "30";
     /**
+     * Default arpo ULI for the RESTful airport service call.
+     */
+    private static final String DEFAULT_ARPO_URI = "http://localhost:8080/AirportService-war/rest/AirportService/id";
+    /**
      * The airport to display arrivals for.
      */
     private String arpo = DEFAULT_ARPO;
@@ -81,6 +85,10 @@ public class ArrivalDisplayConfigurationBean implements Serializable {
      * The data poll interval for display refresh.
      */
     private String pollInterval = DEFAULT_POLL_INTERVAL;
+    /**
+     * The arpo URI for the RESTful airport service call.
+     */
+    private String arpoUri = DEFAULT_ARPO_URI;
 
     /**
      * Creates a new instance of ArrivalDisplayConfigurationBean.
@@ -115,6 +123,7 @@ public class ArrivalDisplayConfigurationBean implements Serializable {
             this.maxEntries = props.getProperty("maxEntries", DEFAULT_MAX_ENTRIES);
             this.baseUri = props.getProperty("baseUri", DEFAULT_BASE_URI);
             this.pollInterval = props.getProperty("pollInterval", DEFAULT_POLL_INTERVAL);
+            this.arpoUri = props.getProperty("arpoUri", DEFAULT_ARPO_URI);
 
             fis.close();
         }
@@ -237,5 +246,23 @@ public class ArrivalDisplayConfigurationBean implements Serializable {
      */
     public void setPollInterval(String pollInterval) {
         this.pollInterval = pollInterval;
+    }
+
+    /**
+     * Get the arpo URI for the RESTful airport service call.
+     *
+     * @return the URI
+     */
+    public String getArpoUri() {
+        return arpoUri;
+    }
+
+    /**
+     * Set the arpo URI for the RESTful airport service call.
+     *
+     * @param arpoUri the URI
+     */
+    public void setArpoUri(String arpoUri) {
+        this.baseUri = arpoUri;
     }
 }
