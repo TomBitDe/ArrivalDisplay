@@ -38,6 +38,7 @@ public class ArrivalDisplayBean implements java.io.Serializable {
 
     private String columnName;
     private List<ColumnModel> columns;
+    private String arpo;
     private List<ArrivalVO> arrivals;
     private List<AirportVO> airports;
 
@@ -66,7 +67,7 @@ public class ArrivalDisplayBean implements java.io.Serializable {
     }
 
     public String getArpo() {
-        return config.getArpo();
+        return this.arpo;
     }
 
     public String getStartDate() {
@@ -100,11 +101,39 @@ public class ArrivalDisplayBean implements java.io.Serializable {
     public void init() {
         LOG.debug("Load configuration...");
         config.loadConfiguration();
+        LOG.debug("Load airport...");
+        loadAirport();
         LOG.debug("Load data...");
         loadArrivals();
 
         LOG.debug("Create arrivals model...");
         createArrivalsModel();
+    }
+
+    /**
+     * Load the airport fullname if possible
+     */
+    private void loadAirport() {
+        String arpoUri = getArpoUri() + "/id" + '/' + config.getArpo();
+        LOG.debug("RESTful call to [" + arpoUri + "]...");
+        AirportVO airport = jaxRsClient.target(arpoUri)
+                .request("application/xml").get(new GenericType<AirportVO>() {
+        });
+
+        if (airport == null) {
+            // Take the airport code
+            this.arpo = config.getArpo();
+        }
+        else {
+            // Take the airport fullname, if ',' does not exist the complete descr
+            if (airport.getDescr().indexOf(',') == -1) {
+                this.arpo = airport.getDescr();
+            }
+            else {
+                // Take the airport fullname, substring before the ','
+                this.arpo = airport.getDescr().substring(0, airport.getDescr().indexOf(','));
+            }
+        }
     }
 
     /**
@@ -130,7 +159,7 @@ public class ArrivalDisplayBean implements java.io.Serializable {
      * JAX-RS client to load the arrivals data.
      */
     private void loadArrivals() {
-        String flgtUri = getBaseUri() + '/' + getArpo() + '/' + getStartDate()
+        String flgtUri = getBaseUri() + '/' + config.getArpo() + '/' + getStartDate()
                 + ' ' + getStartTime() + '/' + getMaxEntries();
         try {
             // Try to load the arrivals first
